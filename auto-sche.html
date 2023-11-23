@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Automatic Scheduler</title>
+    <style>
+      /* CSS styles for the scheduler */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+        background-color: #f8f8f8;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #007bff;
+      }
+
+      h2 {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      #courses {
+        margin-bottom: 20px;
+      }
+
+      .course {
+        margin-bottom: 10px;
+      }
+
+      label {
+        margin-right: 10px;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f0f0f0;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      td:not(:first-child) {
+        cursor: pointer;
+        position: relative;
+      }
+
+      /* Show a tooltip when hovering over a scheduled class */
+      td:not(:first-child):hover::after {
+        content: attr(data-course);
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        border-radius: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      @media screen and (max-width: 600px) {
+        table {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Automatic Scheduler</h1>
+
+    <h2>Set up Courses</h2>
+    <div id="courses">
+      <div class="course">
+        <label for="course1">Course 1:</label>
+        <input type="text" id="course1" placeholder="Course Name" />
+        <label for="times1">Times per Week:</label>
+        <input type="number" id="times1" min="1" />
+      </div>
+      <!-- Add more courses using JavaScript -->
+    </div>
+
+    <button onclick="addCourse()">Add Course</button>
+    <button onclick="scheduleClasses()">Generate Schedule</button>
+
+    <h2>Schedule</h2>
+    <div id="schedule"></div>
+
+    <script>
+      var courseCount = 1;
+
+      function addCourse() {
+        var coursesDiv = document.getElementById("courses");
+
+        var courseDiv = document.createElement("div");
+        courseDiv.classList.add("course");
+
+        var label = document.createElement("label");
+        label.textContent = "Course " + (courseCount + 1) + ":";
+
+        var input = document.createElement("input");
+        input.type = "text";
+        input.id = "course" + (courseCount + 1);
+        input.placeholder = "Course Name";
+
+        var timesLabel = document.createElement("label");
+        timesLabel.textContent = "Times per Week:";
+
+        var timesInput = document.createElement("input");
+        timesInput.type = "number";
+        timesInput.id = "times" + (courseCount + 1);
+        timesInput.min = "1";
+
+        courseDiv.appendChild(label);
+        courseDiv.appendChild(input);
+        courseDiv.appendChild(timesLabel);
+        courseDiv.appendChild(timesInput);
+
+        coursesDiv.appendChild(courseDiv);
+
+        courseCount++;
+      }
+
+      function scheduleClasses() {
+        var courses = document.querySelectorAll(".course");
+        var scheduleDiv = document.getElementById("schedule");
+        scheduleDiv.innerHTML = "";
+
+        var table = document.createElement("table");
+
+        // Create the table header row with days of the week
+        var headerRow = document.createElement("tr");
+        var emptyCell = document.createElement("th");
+        headerRow.appendChild(emptyCell);
+
+        var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        days.forEach(function (day) {
+          var headerCell = document.createElement("th");
+          headerCell.textContent = day;
+          headerRow.appendChild(headerCell);
+        });
+
+        table.appendChild(headerRow);
+
+        // Create rows for time slots and insert subjects
+        for (var i = 1; i <= 10; i++) {
+          var timeRow = document.createElement("tr");
+
+          // Time slot column
+          var timeCell = document.createElement("td");
+          timeCell.textContent = "Class " + i;
+          timeRow.appendChild(timeCell);
+
+          // Subject columns
+          days.forEach(function (day) {
+            var subjectCell = document.createElement("td");
+            subjectCell.textContent = "";
+            timeRow.appendChild(subjectCell);
+          });
+
+          table.appendChild(timeRow);
+        }
+
+        courses.forEach(function (course, index) {
+          var courseName = course.querySelector('input[type="text"]').value;
+          var timesPerWeek = parseInt(
+            course.querySelector('input[type="number"]').value
+          );
+
+          for (var i = 0; i < timesPerWeek; i++) {
+            var randomDayIndex = Math.floor(Math.random() * days.length);
+            var randomTimeSlotIndex = Math.floor(Math.random() * 9) + 1;
+
+            var subjectCell =
+              table.rows[randomTimeSlotIndex].cells[randomDayIndex + 1];
+            subjectCell.textContent = courseName;
+          }
+        });
+
+        scheduleDiv.appendChild(table);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="con">
+        <div class="login-section">
+            <h2>Login as a Student</h2>
+            <form action="check.php" method="post">
+                <label for="student-username">Username:</label>
+                <input type="text" id="student-username" name="student-username" required>
+                
+                <label for="student-password">Password:</label>
+                <input type="password" id="student-password" name="student-password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <center>
+            <p>Don't have account ??</p>
+            <p><a href="http://localhost/final%20year%20project/create.html" id="create">create account here </a></p>
+        </center>
+        </div>
+
+        <div class="login-section">
+            <h2>Login as a Teacher</h2>
+            <form action="teach_check.php" method="post">
+                <label for="teacher-username">Username:</label>
+                <input type="text" id="teacher-username" name="teacher-username" required>
+                
+                <label for="teacher-password">Password:</label>
+                <input type="password" id="teacher-password" name="teacher-password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <center>
+                <p>Don't have account ??</p>
+                <p><a href="teach_create.html" id="create">create account here </a></p>
+            </center>
+    
+        </div>
+    </div>
+</body>
+</html>
